@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: golden-blog-network-policy
+  namespace: golden-blog
+spec:
+  podSelector:
+    matchLabels:
+      app: golden-blog-app
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # Allow HTTP access from any client/Ingress
+    - from: []
+      ports:
+        - protocol: TCP
+          port: 8080
+  egress:
+    # Allow outbound traffic to Cloud SQL (5432) and DNS (53)
+    - ports:
+        - protocol: TCP
+          port: 5432
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53

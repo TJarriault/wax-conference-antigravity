@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Golden Tales — The Kindness of Golden Retrievers</title>
+  <meta name="description" content="A blog dedicated to Golden Retrievers: their gentle temperament, care, puppyhood tips, and heartwarming stories.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand">
+        <span class="brand-icon">🐾</span>
+        <span class="brand-text">Golden<span class="brand-highlight">Tales</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="#about" class="nav-link">About Breed</a>
+        <a href="#articles" class="nav-link">Articles</a>
+        <a href="#gallery" class="nav-link">Gallery</a>
+        <a href="#comments" class="nav-link">Community</a>
+      </nav>
+      <div class="nav-actions">
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
+          <span class="theme-icon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="badge">
+        <span class="badge-dot"></span> The Kindest Dog Breed
+      </div>
+      <h1 class="hero-title">Unconditional Love, Boundless Kindness</h1>
+      <p class="hero-subtitle">
+        Explore the gentle spirit, heartwarming loyalty, and intelligent nature of Golden Retrievers — the world's most beloved canine companion.
+      </p>
+      <div class="hero-cta">
+        <a href="#articles" class="btn btn-primary">Read Stories</a>
+        <a href="#comments" class="btn btn-secondary">Share Your Story</a>
+      </div>
+    </div>
+    <div class="hero-media">
+      <img src="/images/hero.png" alt="Happy Golden Retriever in a sunny park" class="hero-img">
+    </div>
+  </section>
+
+  <!-- Quick Stats / Highlights -->
+  <section id="about" class="highlights-section">
+    <div class="container">
+      <div class="grid grid-3">
+        <div class="highlight-card">
+          <div class="card-icon">❤️</div>
+          <h3>Gentle Temperament</h3>
+          <p>Eager to please, incredibly patient with children, and naturally empathetic towards humans.</p>
+        </div>
+        <div class="highlight-card">
+          <div class="card-icon">🧠</div>
+          <h3>High Intelligence</h3>
+          <p>Ranked among the top 4 smartest dog breeds, making them exceptional therapy & service companions.</p>
+        </div>
+        <div class="highlight-card">
+          <div class="card-icon">✨</div>
+          <h3>Golden Coat</h3>
+          <p>Iconic water-repellant double coat ranging from light cream to deep lustrous amber gold.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Articles Section -->
+  <section id="articles" class="articles-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Latest Golden Articles</h2>
+        <p class="section-subtitle">Discover insights on training, care, and the unique bond Goldens form with their humans.</p>
+      </div>
+      <div id="postsGrid" class="posts-grid">
+        <!-- Dynamically loaded via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Gallery & Care Spotlight -->
+  <section id="gallery" class="gallery-section">
+    <div class="container">
+      <div class="spotlight-card">
+        <div class="spotlight-image-wrap">
+          <img src="/images/puppy.png" alt="Golden Retriever puppy playing" class="spotlight-img">
+        </div>
+        <div class="spotlight-content">
+          <div class="badge badge-amber">Puppyhood & Joy</div>
+          <h2>Raising a Happy Golden Retriever</h2>
+          <p>
+            Golden puppies are filled with curiosity and joy. Providing daily exercise, positive reinforcement, and puzzle games helps channel their energy into lifelong companionship.
+          </p>
+          <ul class="spotlight-list">
+            <li><strong>Soft Mouth Instinct:</strong> Gentle retrieve skills inherited from their heritage.</li>
+            <li><strong>Social Champions:</strong> Thrives when interacting with families and other pets.</li>
+            <li><strong>Lifelong Playfulness:</strong> Keeps their puppy-like enthusiasm well into adult years.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Community Comments Section -->
+  <section id="comments" class="comments-section">
+    <div class="container">
+      <div class="comments-wrapper">
+        <div class="comments-header">
+          <h2>Golden Community Discussion</h2>
+          <p>Have a Golden story or a question? Leave a note for fellow dog lovers!</p>
+        </div>
+
+        <form id="commentForm" class="comment-form">
+          <div class="form-group">
+            <label for="authorInput">Your Name</label>
+            <input type="text" id="authorInput" placeholder="e.g. Sarah & Oliver" required>
+          </div>
+          <div class="form-group">
+            <label for="commentInput">Your Story or Comment</label>
+            <textarea id="commentInput" rows="3" placeholder="Share your favorite Golden Retriever moment..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Post Comment</button>
+        </form>
+
+        <div class="comments-list-wrapper">
+          <h3>Recent Comments</h3>
+          <div id="commentsList" class="comments-list">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <span class="brand-icon">🐾</span>
+        <span>GoldenTales</span>
+      </div>
+      <p class="footer-copy">
+        Dedicated to Golden Retrievers worldwide. Deployed on Google Kubernetes Engine (GKE Autopilot) & Cloud SQL.
+      </p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

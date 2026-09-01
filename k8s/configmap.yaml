@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: golden-blog-config
+  namespace: golden-blog
+data:
+  PORT: "8080"
+  DB_HOST: "10.10.0.5" # Replace with actual Cloud SQL Private IP or 127.0.0.1 if using proxy
+  DB_PORT: "5432"
+  DB_NAME: "golden_blog"
+  DB_USER: "blog_user"
