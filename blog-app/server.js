@@ -14,7 +14,7 @@ const dbConfig = {
   user: process.env.DB_USER || 'blog_user',
   host: process.env.DB_HOST || '127.0.0.1',
   database: process.env.DB_NAME || 'golden_blog',
-  password: process.env.DB_PASS || 'secretpassword',
+  password: process.env.DB_PASS, // 🛡️ Sentinel: Removed hardcoded credentials
   port: parseInt(process.env.DB_PORT || '5432', 10),
   connectionTimeoutMillis: 5000,
   idleTimeoutMillis: 30000,
