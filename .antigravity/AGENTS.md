@@ -33,6 +33,7 @@ Before proposing changes:
 3. Check securityContext.
 4. Check NetworkPolicies when applicable.
 5. Avoid privileged containers.
+6. Create helm file allowing to deploy easly application
 
 ## Pull Requests
 

@@ -79,6 +79,44 @@ a {
   padding: 0 24px;
 }
 
+/* Conference Announcement Banner */
+.conference-banner {
+  background: linear-gradient(90deg, #b45309 0%, #d97706 50%, #f59e0b 100%);
+  color: #ffffff;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.2);
+  position: relative;
+  z-index: 102;
+}
+
+.conference-banner-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.conference-badge {
+  background: rgba(255, 255, 255, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(4px);
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.conference-message {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
 /* Navbar */
 .navbar {
   position: sticky;
@@ -163,6 +201,18 @@ a {
   margin: 0 auto;
 }
 
+.hero-badge-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.hero-badge-group .badge {
+  margin-bottom: 0;
+}
+
 .badge {
   display: inline-flex;
   align-items: center;
@@ -179,6 +229,20 @@ a {
 .badge-amber {
   background: rgba(245, 158, 11, 0.15);
   color: #d97706;
+}
+
+.badge-wax {
+  background: linear-gradient(135deg, rgba(217, 119, 6, 0.15) 0%, rgba(245, 158, 11, 0.25) 100%);
+  color: #b45309;
+  border: 1px solid rgba(217, 119, 6, 0.35);
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(217, 119, 6, 0.1);
+}
+
+[data-theme="dark"] .badge-wax {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.18) 0%, rgba(245, 158, 11, 0.28) 100%);
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, 0.4);
 }
 
 .badge-dot {
@@ -566,6 +630,9 @@ a {
   .hero-section, .spotlight-card {
     grid-template-columns: 1fr;
     text-align: center;
+  }
+  .hero-badge-group {
+    justify-content: center;
   }
   .hero-cta {
     justify-content: center;
