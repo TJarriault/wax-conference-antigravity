@@ -35,6 +35,12 @@ Before proposing changes:
 5. Avoid privileged containers.
 6. Create helm file allowing to deploy easly application
 
+## Documentation
+Take into account agent '.agents/agents/architecture/agent.md'
+
+## TEST
+Execute agent for test '.agents/agents/test-agent/agent.md'
+
 ## Pull Requests
 
 Changes must:
@@ -43,3 +49,5 @@ Changes must:
 - Include tests where appropriate.
 - Not introduce secrets.
 - Respect the existing architecture.
+
+
