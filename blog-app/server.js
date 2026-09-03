@@ -27,7 +27,7 @@ let dbConnected = false;
 const defaultPosts = [
   {
     id: 1,
-    title: "Why Golden Retrievers Are Known as the Kindest Dogs",
+    title: "Why My Golden Retrievers named 'Cooper' is Known as the Kindest Dogs",
     author: "Elena Vance",
     date: "2026-08-28",
     category: "Temperament",
