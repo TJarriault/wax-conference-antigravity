@@ -2,6 +2,24 @@
 
 This directory contains the Kubernetes manifests required to deploy the **Golden Retriever Blog** application on a **GKE Autopilot** cluster.
 
+## Automated Deployment (Recommended)
+
+You can deploy the full stack automatically using the `setup.sh` script located in the project root:
+
+```bash
+# Usage: ./setup.sh <PROJECT_ID>
+./setup.sh my-gcp-project-id
+```
+
+The script performs the following tasks automatically:
+1. Provisions infrastructure via Terraform (`iac/`).
+2. Builds and pushes the Docker container image to Artifact Registry.
+3. Authenticates `kubectl` to the GKE Autopilot cluster.
+4. Inject dynamic parameters (Cloud SQL IP, DB password, Artifact Registry image URL) and applies all Kubernetes manifests.
+5. Verifies deployment rollout status.
+
+---
+
 ## Manifest Overview
 
 | Manifest | Purpose |
@@ -15,7 +33,7 @@ This directory contains the Kubernetes manifests required to deploy the **Golden
 
 ---
 
-## Step-by-Step Deployment Guide
+## Manual Deployment Guide
 
 ### 1. Build and Push Docker Image to Artifact Registry
 
