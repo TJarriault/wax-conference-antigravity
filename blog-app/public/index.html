@@ -140,10 +140,15 @@
             <input type="text" id="authorInput" placeholder="e.g. Sarah & Oliver" required>
           </div>
           <div class="form-group">
+            <label for="emailInput">Your Email (Optional, to receive a copy of your submission)</label>
+            <input type="email" id="emailInput" placeholder="e.g. sarah@example.com">
+          </div>
+          <div class="form-group">
             <label for="commentInput">Your Story or Comment</label>
             <textarea id="commentInput" rows="3" placeholder="Share your favorite Golden Retriever moment..." required></textarea>
           </div>
           <button type="submit" class="btn btn-primary">Post Comment</button>
+          <div id="formFeedback" class="form-feedback" style="display: none; margin-top: 12px; font-weight: 500;"></div>
         </form>
 
         <div class="comments-list-wrapper">

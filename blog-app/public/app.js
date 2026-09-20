@@ -25,27 +25,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Comment form handler
   const commentForm = document.getElementById('commentForm');
+  const formFeedback = document.getElementById('formFeedback');
+
   commentForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const author = document.getElementById('authorInput').value.trim();
+    const email = document.getElementById('emailInput') ? document.getElementById('emailInput').value.trim() : '';
     const comment = document.getElementById('commentInput').value.trim();
 
     if (!author || !comment) return;
+
+    if (formFeedback) {
+      formFeedback.style.display = 'none';
+      formFeedback.className = 'form-feedback';
+    }
 
     try {
       const response = await fetch('/api/comments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ postId: 1, author, comment })
+        body: JSON.stringify({ postId: 1, author, email, comment })
       });
 
       if (response.ok) {
         document.getElementById('authorInput').value = '';
+        if (document.getElementById('emailInput')) {
+          document.getElementById('emailInput').value = '';
+        }
         document.getElementById('commentInput').value = '';
+
+        if (formFeedback) {
+          formFeedback.style.display = 'block';
+          formFeedback.style.color = '#059669';
+          formFeedback.textContent = email
+            ? 'Comment posted! A copy of your content has been emailed to you.'
+            : 'Comment posted successfully!';
+        }
         fetchComments();
+      } else {
+        if (formFeedback) {
+          formFeedback.style.display = 'block';
+          formFeedback.style.color = '#dc2626';
+          formFeedback.textContent = 'Failed to submit comment. Please try again.';
+        }
       }
     } catch (err) {
       console.error('Failed to post comment:', err);
+      if (formFeedback) {
+        formFeedback.style.display = 'block';
+        formFeedback.style.color = '#dc2626';
+        formFeedback.textContent = 'Network error. Please try again.';
+      }
     }
   });
 });
