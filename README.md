@@ -73,3 +73,32 @@ graph TD
 ## 6. Testing & Deployment Verification
 
 For local testing guidelines, docker image creation, and Minikube Helm verification steps, consult [TEST.md](file:///appli/Sogeti/wax-conference/wax-conference-antigravity/TEST.md).
+
+---
+
+## 7. CI/CD Pipeline (GitHub Actions & GCP GKE)
+
+The repository includes an automated GitHub Actions pipeline located at [.github/workflows/deploy.yml](file:///appli/Sogeti/wax-conference/wax-conference-antigravity/.github/workflows/deploy.yml).
+
+### Workflow Sequence
+
+```mermaid
+graph TD
+    Push["Git Push / PR to main"] --> Checkout["1. Checkout Repository"]
+    Checkout --> GCPAuth["2. Authenticate to GCP (Workload Identity)"]
+    GCPAuth --> DockerAuth["3. Configure Docker for Artifact Registry"]
+    DockerAuth --> Build["4. Build Container Image (blog-app)"]
+    Build --> PushRegistry["5. Push Image to europe-west1-docker.pkg.dev"]
+    PushRegistry --> HelmTemplate["6. Helm Lint & Render Template"]
+    HelmTemplate --> GKECreds["7. Fetch GKE Credentials (wax-conf)"]
+    GKECreds --> DeployHelm["8. Helm Upgrade / Install to Namespace golden-blog"]
+    DeployHelm --> RolloutCheck["9. Verify Deployment Rollout Status"]
+```
+
+### GitHub Secrets Configuration
+
+To run the pipeline, configure the following secret in your GitHub repository (`Settings > Secrets and variables > Actions`):
+
+- **`GCP_SA_KEY`**: Content of the Service Account JSON Key file (GCP Service Account with roles `roles/artifactregistry.writer`, `roles/container.developer` or `roles/container.admin`).
+- *(Optional Alternative)* **`GCP_WORKLOAD_IDENTITY_PROVIDER`** & **`GCP_SERVICE_ACCOUNT`** if using Workload Identity Federation instead of a key file.
+

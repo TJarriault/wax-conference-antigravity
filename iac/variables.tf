@@ -1,7 +1,7 @@
 variable "project_id" {
   type        = string
   description = "The GCP Project ID where resources will be deployed."
-  default     = "my-gcp-project-id"
+  default     = "lgu-demos"
 }
 
 variable "region" {
@@ -19,25 +19,25 @@ variable "zone" {
 variable "cluster_name" {
   type        = string
   description = "The name of the GKE Autopilot cluster."
-  default     = "golden-blog-gke-cluster"
+  default     = "wax-conf"
 }
 
 variable "network_name" {
   type        = string
   description = "The name of the VPC network."
-  default     = "golden-blog-vpc"
+  default     = "default"
 }
 
 variable "subnet_name" {
   type        = string
   description = "The name of the VPC subnetwork."
-  default     = "golden-blog-subnet"
+  default     = "default"
 }
 
 variable "subnet_cidr" {
   type        = string
   description = "The CIDR block for the subnetwork."
-  default     = "10.10.0.0/20"
+  default     = "10.2.128.0/17"
 }
 
 variable "db_instance_name" {

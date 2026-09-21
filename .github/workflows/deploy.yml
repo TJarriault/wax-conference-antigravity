@@ -1,0 +1,110 @@
+name: Build, Package & Deploy to GCP GKE
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  GCP_PROJECT_ID: "lgu-demos"
+  GCP_REGION: "europe-west1"
+  GKE_CLUSTER: "wax-conf"
+  ARTIFACT_REPOSITORY: "golden-blog-repo"
+  IMAGE_NAME: "golden-retriever-blog"
+  HELM_RELEASE_NAME: "golden-retriever-blog"
+  HELM_CHART_PATH: "./helm/golden-retriever-blog"
+  K8S_NAMESPACE: "golden-blog"
+
+jobs:
+  build-and-deploy:
+    name: Build Container, Lint Helm & Deploy to GKE
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write # Required for GCP Workload Identity Federation
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          # Workload Identity Federation (Optional alternative if GCP_SA_KEY is not used):
+          # workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          # service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for GCP Artifact Registry
+        run: |
+          gcloud auth configure-docker ${{ env.GCP_REGION }}-docker.pkg.dev --quiet
+
+      - name: Define Image Tags
+        id: image-meta
+        run: |
+          REGISTRY_HOST="${{ env.GCP_REGION }}-docker.pkg.dev"
+          FULL_IMAGE_NAME="${REGISTRY_HOST}/${{ env.GCP_PROJECT_ID }}/${{ env.ARTIFACT_REPOSITORY }}/${{ env.IMAGE_NAME }}"
+          echo "IMAGE_TAG_SHA=${FULL_IMAGE_NAME}:${{ github.sha }}" >> $GITHUB_OUTPUT
+          echo "IMAGE_TAG_LATEST=${FULL_IMAGE_NAME}:latest" >> $GITHUB_OUTPUT
+
+      - name: Build Docker Image
+        run: |
+          docker build \
+            -t ${{ steps.image-meta.outputs.IMAGE_TAG_SHA }} \
+            -t ${{ steps.image-meta.outputs.IMAGE_TAG_LATEST }} \
+            ./blog-app
+
+      - name: Push Docker Image to GCP Artifact Registry
+        if: github.event_name != 'pull_request' || github.ref == 'refs/heads/main'
+        run: |
+          docker push ${{ steps.image-meta.outputs.IMAGE_TAG_SHA }}
+          docker push ${{ steps.image-meta.outputs.IMAGE_TAG_LATEST }}
+
+      - name: Install & Setup Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: 'v3.14.0'
+
+      - name: Helm Lint
+        run: |
+          helm lint ${{ env.HELM_CHART_PATH }}
+
+      - name: Render Helm Template (Dry-Run & Validation)
+        run: |
+          helm template ${{ env.HELM_RELEASE_NAME }} ${{ env.HELM_CHART_PATH }} \
+            --namespace ${{ env.K8S_NAMESPACE }} \
+            --set image.repository=${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/${{ env.ARTIFACT_REPOSITORY }}/${{ env.IMAGE_NAME }} \
+            --set image.tag=${{ github.sha }}
+
+      - name: Connect to GKE Cluster
+        if: github.event_name != 'pull_request' || github.ref == 'refs/heads/main'
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          location: ${{ env.GCP_REGION }}
+          project_id: ${{ env.GCP_PROJECT_ID }}
+
+      - name: Deploy Application with Helm
+        if: github.event_name != 'pull_request' || github.ref == 'refs/heads/main'
+        run: |
+          helm upgrade --install ${{ env.HELM_RELEASE_NAME }} ${{ env.HELM_CHART_PATH }} \
+            --namespace ${{ env.K8S_NAMESPACE }} \
+            --create-namespace \
+            --set image.repository=${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/${{ env.ARTIFACT_REPOSITORY }}/${{ env.IMAGE_NAME }} \
+            --set image.tag=${{ github.sha }} \
+            --wait \
+            --timeout 5m0s
+
+      - name: Verify Deployment Rollout
+        if: github.event_name != 'pull_request' || github.ref == 'refs/heads/main'
+        run: |
+          kubectl rollout status deployment/${{ env.HELM_RELEASE_NAME }} -n ${{ env.K8S_NAMESPACE }} --timeout=2m
