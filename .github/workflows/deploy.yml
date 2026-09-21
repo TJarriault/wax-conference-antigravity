@@ -28,12 +28,16 @@ jobs:
       contents: read
       id-token: write # Required for GCP Workload Identity Federation
 
+    env:
+      HAS_GCP_SA_KEY: ${{ secrets.GCP_SA_KEY != '' }}
+      HAS_GCP_WIF: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER != '' }}
+
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
       - name: Authenticate to Google Cloud (Service Account Key)
-        if: ${{ secrets.GCP_SA_KEY != '' }}
+        if: ${{ env.HAS_GCP_SA_KEY == 'true' }}
         id: auth-sa
         uses: google-github-actions/auth@v2
         with:
@@ -41,7 +45,7 @@ jobs:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
       - name: Authenticate to Google Cloud (Workload Identity)
-        if: ${{ secrets.GCP_SA_KEY == '' && secrets.GCP_WORKLOAD_IDENTITY_PROVIDER != '' }}
+        if: ${{ env.HAS_GCP_SA_KEY == 'false' && env.HAS_GCP_WIF == 'true' }}
         id: auth-wif
         uses: google-github-actions/auth@v2
         with:
