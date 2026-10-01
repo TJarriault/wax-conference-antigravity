@@ -14,12 +14,12 @@ The **Golden Retriever Blog** is a containerized multi-tier web application desi
 
 ```mermaid
 graph TD
-    Client["User / Web Browser"] -->|HTTP / Port 80, 8080| Ingress["GKE LoadBalancer Service / Ingress"]
-    Ingress -->|TCP / Port 8080| AppPods["Golden Retriever Blog Pods (Node.js/Express)"]
-    AppPods -->|Static Assets| Frontend["Frontend UI (Vanilla JS, CSS, HTML5)"]
-    AppPods -->|REST API (/api/posts, /api/comments)| Backend["Backend API Logic (server.js)"]
-    Backend -->|PostgreSQL Protocol / Port 5432| CloudSQL[("Cloud SQL (PostgreSQL Database)")]
-    Backend -.->|Fallback if DB Offline| InMemory[("In-Memory State Store")]
+    Client["User / Web Browser"] -->|"HTTP / Port 80, 8080"| Ingress["GKE LoadBalancer Service / Ingress"]
+    Ingress -->|"TCP / Port 8080"| AppPods["Golden Retriever Blog Pods (Node.js/Express)"]
+    AppPods -->|"Static Assets"| Frontend["Frontend UI (Vanilla JS, CSS, HTML5)"]
+    AppPods -->|"REST API (/api/posts, /api/comments)"| Backend["Backend API Logic (server.js)"]
+    Backend -->|"PostgreSQL Protocol / Port 5432"| CloudSQL[("Cloud SQL (PostgreSQL Database)")]
+    Backend -.->|"Fallback if DB Offline"| InMemory[("In-Memory State Store")]
 ```
 
 ---
